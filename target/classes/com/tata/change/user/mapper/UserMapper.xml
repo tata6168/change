@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tata.change.user.mapper.UserMapper">
+<!--  USER  -->
+    <select id="verifyName" parameterType="String" resultType="User">
+        SELECT * FROM user WHERE name LIKE CONCAT('%',#{name},'%');
+    </select>
+    
+    <select id="userIdRetrievePermission" resultType="String" parameterType="Long">
+        SELECT p.path FROM
+        user AS u JOIN user_role AS ur
+        ON u.user_id =ur.user_id
+        JOIN role AS r
+        ON ur.role_id = r.role_id
+        JOIN role_permission AS rp
+        ON r.role_id = rp.role_id
+        JOIN permission AS p
+        ON p.permission_id = rp.permission_id
+        WHERE u.user_id = #{userId};
+    </select>
+<!--  BASE  -->
+    <insert id="baseInsert" parameterType="User" useGeneratedKeys="true" keyColumn="user_id" keyProperty="userId">
+        INSERT INTO user() VALUES ();
+    </insert>
+    <select id="baseSearchById" parameterType="Long" resultType="User">
+        SELECT * FROM user WHERE user_id = #{userId};
+    </select>
+    <update id="baseUpdate" parameterType="Map">
+        UPDATE user SET();
+    </update>
+    <delete id="baseDeleteById" parameterType="Long">
+        DELETE FROM user WHERE user_id = #{userId}
+    </delete>
+    <select id="baseSearchAll" resultType="User">
+        SELECT * FROM user;
+    </select>
+    <select id="count" resultType="Long">
+        SELECT COUNT(*) FROM user;
+    </select>
+</mapper>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tata.change.shiro.mapper.PermissionMapper">
+<!--  query  -->
+    <select id="query" parameterType="Query" resultType="Permission">
+        SELECT * FROM permission
+        <if test="keyWords!=''||keyWords!=null">
+            WHERE permission_name LIKE CONCAT('%',#{keyWords},'%')
+        </if>
+         LIMIT #{currentPage},#{pageSize}
+    </select>
+<!--base-->
+    <insert id="baseInsert" parameterType="Role" useGeneratedKeys="true" keyColumn="permission_id" keyProperty="permissionId">
+        INSERT INTO permission(permission_name,path) VALUES (#{permissionName},#{path});
+    </insert>
+    <select id="baseSearchById" parameterType="Long" resultType="Role">
+        SELECT * FROM permission WHERE permission_id = #{permissionId};
+    </select>
+    <update id="baseUpdate" parameterType="Map">
+        UPDATE permission SET(permission_Name = permissionName);
+    </update>
+    <delete id="baseDeleteById" parameterType="Long">
+        DELETE FROM permission WHERE permission_id = #{permissionId}
+    </delete>
+    <select id="baseSearchAll" resultType="Permission">
+        SELECT * FROM permission;
+    </select>
+    <select id="count" resultType="Long">
+        SELECT COUNT(*) FROM permission;
+    </select>
+</mapper>

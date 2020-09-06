@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tata.change.shiro.mapper.RoleMapper">
+<!-- PERMISSION -->
+<!-- List<Permission> roleByPermission(Integer roleId);   -->
+    <select id="roleByPermission" resultType="Permission" parameterType="Integer">
+        SELECT p.permission_id AS permissionId,p.permission_name AS permissionName,p.path AS path FROM
+        role_permission AS rp JOIN permission AS p ON rp.permission_id = p.permission_id
+        WHERE rp.role_id = #{roleId}
+    </select>
+    <!--删除角色中的权限-->
+    <delete id="roleDeletePermission" parameterType="List" >
+        DELETE FROM role_permission AS rp WHERE
+        <foreach collection="list"  item="item" index="index" separator=","  close=");">
+           <choose>
+               <when test="index==0">
+                    rp.role_id = #{item} AND rp.permission_id IN (#{item}
+               </when>
+               <otherwise>
+                    #{item}
+               </otherwise>
+           </choose>
+        </foreach>>
+    </delete>
+    <!--删除角色-->
+    <delete id="deleteRole" parameterType="Long">
+<!--删除角色与权限中间数据 再删除角色-->
+        DELETE FROM role_permission AS rp WHERE rp.role_id = #{id};
+        DELETE FROM role WHERE role_id = #{id};
+    </delete>
+<!--void userRoleAdd(@Param("userId") Long userId,@Param("roleId") List<Integer> roleId);-->
+<!--  用户添加角色  -->
+    <insert id="userRoleAdd" >
+        INSERT INTO user_role(user_id,role_id) VALUES
+        <foreach collection="roleId" item="item" separator="," >
+            (#{userId,jdbcType=BIGINT},#{item,jdbcType=INTEGER})
+        </foreach>
+    </insert>
+<!--
+    void baseInsert(T t);
+    T baseSearchById(Long id);
+    void baseUpdate(Map param);
+    void baseDeleteById(Long id);
+-->
+    <insert id="baseInsert" parameterType="Permission" useGeneratedKeys="true" keyColumn="role_id" keyProperty="roleId">
+        INSERT INTO role(role_name) VALUES (#{roleName});
+    </insert>
+    <select id="baseSearchById" parameterType="Long" resultType="Permission">
+        SELECT * FROM role WHERE role_id = #{roleId};
+    </select>
+    <update id="baseUpdate" parameterType="Map">
+        UPDATE role SET(role_name=#{roleName});
+    </update>
+    <delete id="baseDeleteById" parameterType="Long">
+        DELETE FROM role WHERE role_id = #{roleId}
+    </delete>
+    <select id="baseSearchAll" resultType="Role">
+        SELECT * FROM role;
+    </select>
+    <select id="count" resultType="Long">
+        SELECT COUNT(*) FROM role;
+    </select>
+</mapper>

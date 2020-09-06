@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <title>Title</title>
+    <script src="../js/vue.js"></script>
+    <script src="../js/element.js"></script>
+    <link rel="stylesheet" href="../elementuiCss/element.css">
+    <script src="../js/axios.js"></script>
+</head>
+<body>
+<template>
+    <el-table
+            :data="permissionTable"
+            style="width: 100%">
+        <el-table-column
+                prop="permissionName"
+                label="权限名字"
+                width="180">
+        </el-table-column>
+        <el-table-column
+                prop="name"
+                label="权限路径"
+                width="180">
+        </el-table-column>
+    </el-table>
+</template>
+</body>
+<script>
+    new Vue({
+        el:'',
+        data:{
+            permissionTable:{
+                permissionName:'',
+                path:''
+            }
+        },
+        methods:{
+            tableData(){
+                axios.post('localhost:8080/permission/')
+            }
+        },
+        mounted(){
+
+        }
+
+    });
+</script>
+</html>
