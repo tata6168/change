@@ -99,6 +99,7 @@ public class ShiroCof {
         factoryBean.setSuccessUrl("/success");
         factoryBean.setLoginUrl("/login");
         HashMap<String, String> map = new HashMap<>();
+        map.put("/**","anon");
         map.put("/test","perms[test:test]");
         factoryBean.setFilterChainDefinitionMap(map);
         return factoryBean;

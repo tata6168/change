@@ -4,6 +4,7 @@ import com.tata.change.base.service.impl.ServiceImpl;
 import com.tata.change.shiro.demo.Permission;
 import com.tata.change.shiro.mapper.PermissionMapper;
 import com.tata.change.shiro.service.PermissionService;
+import com.tata.change.util.DataCount;
 import com.tata.change.util.Query;
 import com.tata.change.util.result.ResultJson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +17,11 @@ import java.util.List;
 public class PermissionServiceImpl extends ServiceImpl<Permission> implements PermissionService  {
     @Autowired
     PermissionMapper permissionMapper;
-
     @Override
     public ResultJson data(Query<Permission> query) {
-        permissionMapper.query(query);
-        
-        return null;
+        List<Permission> data = permissionMapper.query(query);
+        Long count = DataCount.get(Permission.class);
+        return new ResultJson(count,data,"");
     }
+
 }

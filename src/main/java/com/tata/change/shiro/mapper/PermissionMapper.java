@@ -7,5 +7,4 @@ import com.tata.change.util.Query;
 import java.util.List;
 
 public interface PermissionMapper extends BaseMapper<Permission> {
-    List<Permission> query(Query<Permission> query);
 }
