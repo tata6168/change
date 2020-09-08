@@ -18,8 +18,7 @@ public class ServiceImpl<T extends Demo> implements Service<T> {
     private static Class key;
     {
         if(key==null) {
-            Type[] types = this.getClass().getGenericInterfaces();
-            String typeName = types[0].getTypeName();
+            String typeName = this.getClass().getGenericSuperclass().getTypeName();
             String genericName = typeName.substring(typeName.indexOf("<") + 1, typeName.lastIndexOf(">"));
             try {
                 key = Class.forName(genericName);
@@ -27,7 +26,6 @@ public class ServiceImpl<T extends Demo> implements Service<T> {
                 e.printStackTrace();
             }
         }
-
     }
     BaseMapper<T> baseMapper;
     @Override

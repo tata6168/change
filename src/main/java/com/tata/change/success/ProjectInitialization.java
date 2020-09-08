@@ -12,16 +12,35 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
+import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import java.lang.reflect.Type;
+import java.util.Map;
 
 //boot start success processes
 @Component
-public class DataCountInit implements ApplicationRunner {
+public class ProjectInitialization implements ApplicationRunner {
     @Autowired
     ApplicationContext applicationContext;
     @Override
     public void run(ApplicationArguments args) throws Exception {
+//        dataCountInitialization();
+        permissionAndRoleTableInitialization();
+
+    }
+    private void permissionAndRoleTableInitialization(){
+        RequestMappingHandlerMapping mapping = applicationContext.getBean(RequestMappingHandlerMapping.class);
+        Map<RequestMappingInfo, HandlerMethod> handlerMethods = mapping.getHandlerMethods();
+        //拿到所有url
+        handlerMethods.entrySet().forEach(e->{
+            e.getKey().getPatternsCondition().getPatterns().forEach(u->{
+                System.out.println(u);
+            });
+        });
+    }
+    private void dataCountInitialization(){
         //获取实现BaseMapper接口的bean
         ObjectProvider<BaseMapper> provider = applicationContext.getBeanProvider(BaseMapper.class);
         provider.forEach(e->{
