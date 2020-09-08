@@ -6,12 +6,15 @@ import com.tata.change.shiro.service.PermissionService;
 import com.tata.change.util.Query;
 import com.tata.change.util.result.ResultJson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
 
-@RestController("/permission")
+@Controller
+@RequestMapping("/permission")
 public class PermissionController {
     @Autowired
     PermissionMapper permissionMapper;

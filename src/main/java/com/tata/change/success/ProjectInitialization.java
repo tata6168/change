@@ -3,8 +3,10 @@ package com.tata.change.success;
 import com.tata.change.base.demo.Demo;
 import com.tata.change.base.mapper.BaseMapper;
 import com.tata.change.shiro.demo.Permission;
+import com.tata.change.shiro.demo.Role;
 import com.tata.change.user.demo.User;
 import com.tata.change.util.DataCount;
+import com.tata.change.util.shiro.UrlUtilBuilder;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.Map;
 
 //boot start success processes
@@ -30,13 +33,26 @@ public class ProjectInitialization implements ApplicationRunner {
         permissionAndRoleTableInitialization();
 
     }
+    //检查权限的表是否创建以及表中是否有数据
     private void permissionAndRoleTableInitialization(){
         RequestMappingHandlerMapping mapping = applicationContext.getBean(RequestMappingHandlerMapping.class);
         Map<RequestMappingInfo, HandlerMethod> handlerMethods = mapping.getHandlerMethods();
         //拿到所有url
+        HashMap<String, Role> data = new HashMap<>();
+        UrlUtilBuilder builder = new UrlUtilBuilder(data);
         handlerMethods.entrySet().forEach(e->{
             e.getKey().getPatternsCondition().getPatterns().forEach(u->{
-                System.out.println(u);
+                try {
+                    builder.urlTransitionShiro(u);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            });
+        });
+        data.entrySet().forEach(e->{
+            System.out.println(e.getKey());
+            e.getValue().getPermissionList().forEach(p->{
+                System.out.println(p.getSn());
             });
         });
     }

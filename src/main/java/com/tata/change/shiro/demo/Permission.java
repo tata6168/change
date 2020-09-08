@@ -3,9 +3,18 @@ package com.tata.change.shiro.demo;
 import com.tata.change.base.demo.Demo;
 
 public class Permission extends Demo {
-    Integer permissionId;
-    String permissionName;
-    String path;
+    private Integer permissionId;
+    private String permissionName;
+    private String path;
+    private String sn;
+
+    public String getSn() {
+        return sn;
+    }
+
+    public void setSn(String sn) {
+        this.sn = sn;
+    }
 
     public Integer getPermissionId() {
         return permissionId;
