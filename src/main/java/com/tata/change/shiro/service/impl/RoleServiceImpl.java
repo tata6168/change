@@ -36,4 +36,16 @@ public class RoleServiceImpl extends ServiceImpl<Role> implements RoleService {
     public void userRoleAdd(Long userId, List<Integer> roleId) {
         roleMapper.userRoleAdd(userId,roleId);
     }
+
+    @Override
+    public void rolePermissionAdd(Integer roleId, List<Integer> permissionId) {
+        roleMapper.rolePermissionAdd(roleId,permissionId);
+    }
+
+    @Override
+    public void roleMenuAdd(Integer roleId, Integer menuId) {
+        roleMapper.roleMenuAdd(roleId,menuId);
+    }
+
+
 }

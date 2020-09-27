@@ -1,7 +1,7 @@
 package com.tata.change.base.mapper;
 
 import com.tata.change.base.demo.Demo;
-import com.tata.change.util.Query;
+import com.tata.change.base.demo.Query;
 
 import java.util.List;
 import java.util.Map;
@@ -14,4 +14,5 @@ public interface BaseMapper<T extends Demo> {
     List<T> baseSearchAll();
     List<T> query(Query<T> query);
     Long count();
+    void createTable();
 }

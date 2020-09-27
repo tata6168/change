@@ -20,9 +20,16 @@
         ON p.permission_id = rp.permission_id
         WHERE u.user_id = #{userId};
     </select>
+<!--
+    用户角色id获取
+    List<Integer> userByRoleId(Long userId);
+-->
+    <select id="userByRoleId" resultType="Integer" parameterType="Long">
+        SELECT ur.role_id AS roleId FROM user u JOIN user_role ur ON u.user_id = ur.user_id WHERE u.user_id = #{userId};
+    </select>
 <!--  BASE  -->
     <insert id="baseInsert" parameterType="User" useGeneratedKeys="true" keyColumn="user_id" keyProperty="userId">
-        INSERT INTO user() VALUES ();
+        INSERT INTO user(name,password) VALUES (#{name},#{passWord});
     </insert>
     <select id="baseSearchById" parameterType="Long" resultType="User">
         SELECT * FROM user WHERE user_id = #{userId};
@@ -38,5 +45,8 @@
     </select>
     <select id="count" resultType="Long">
         SELECT COUNT(*) FROM user;
+    </select>
+    <select id="query" parameterType="UserQuery" resultType="User">
+        SELECT user_id AS userId,name FROM user;
     </select>
 </mapper>

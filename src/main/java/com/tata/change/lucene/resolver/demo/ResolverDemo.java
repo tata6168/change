@@ -5,10 +5,10 @@ import org.apache.lucene.document.Field;
 import java.lang.reflect.Constructor;
 
 public class ResolverDemo {
-    String fieldName;
-    java.lang.reflect.Field fieldType;
-    Constructor<? extends Field> constructor;
-    Field.Store store;
+    private String fieldName;
+    private java.lang.reflect.Field fieldType;
+    private Constructor<? extends Field> constructor;
+    private Field.Store store;
 
     public Field.Store getStore() {
         return store;

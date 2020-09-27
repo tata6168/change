@@ -1,0 +1,24 @@
+1.模块 user/shiro/
+2.技术 boot,lucene,mybatis,shiro
+3.项目初启动初始化：com.tata.change.initialization.ProjectInitialization
+    a)菜单表 menu/role_menu 权限表 permission/role/role_permission/ Condition(yml中project.status=dev  或者上述表其中一张的数据量为0)
+      **通过获取Controller中的url路径来生成表数据
+    b)lucene 实体类解析 通过注解@FieldCondition 来标定lucene需要操作得字段
+        //未完成。。。。。。。。。。。。。。
+
+
+
+
+
+
+
+
+9.27: 一.waiting...用户id --> 菜单查询（项目启动时直接将每个角色的信息查询到缓存中）
+
+        scheme one:在父级菜单数据中也添加上他的menu_id作为parent_id,方便拿到角色id中的parent_id 直接查询所有菜单数据然后再进行拼接
+        scheme two:查询中直接完成数据，直接返回菜单数据
+      二.用户登录->拿到user_id ->查询role_id
+      (存储到user中查询Menu时直接到主体中获取\需要拿取时再获取(shiro获取登录用户权限时不直接获取,因为后面拿菜单到缓存中获取，还需要RoleId))
+      ->查询permission->(页面跳转时调用)查询menu
+
+ok......Controller Mapping 中/path/{paramName} 解析有问题 test:result3:{path}:{sn} 完成形式 URL /test/result3 SN[test:result3]

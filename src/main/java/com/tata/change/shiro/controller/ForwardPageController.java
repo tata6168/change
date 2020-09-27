@@ -4,14 +4,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/shiro")
+@RequestMapping("/forward")
 public class ForwardPageController {
+    @RequestMapping("/main")
+    public String main(){
+        return "layui/main";
+    }
     @RequestMapping("/permstable")
     public String permsTable(){
-        return "/shiro/permission";
+        return "layui/shiro/permission";
     }
     @RequestMapping("/roletable")
     public String roleTable(){
-        return "/shiro/role";
+        return "layui/shiro/role";
     }
 }

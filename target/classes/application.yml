@@ -1,6 +1,8 @@
 server:
   port: 8080
 spring:
+  thymeleaf:
+    cache: false
   application:
     name: TATACHANGE
   datasource:
@@ -11,5 +13,10 @@ spring:
 mybatis:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-  mapper-locations: com/tata/change/**/mapper/**Mapper.xml
-  type-aliases-package: com.tata.change.user.demo,com.tata.change.shiro.demo,com.tata.change.util
+    cache-enabled: true
+  mapper-locations: com/tata/change/**/mapper/**Mapper.xml,com/tata/change/initialization/db/**Mapper.xml
+  type-aliases-package: com.tata.change.user.demo,com.tata.change.shiro.demo,com.tata.change.util,com.tata.change.base.demo,com.tata.change.menu.demo
+lucene:
+  directory: lucene/index
+project:
+  status: de

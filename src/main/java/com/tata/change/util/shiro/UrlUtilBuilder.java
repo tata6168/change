@@ -3,7 +3,6 @@ package com.tata.change.util.shiro;
 import com.tata.change.shiro.demo.Permission;
 import com.tata.change.shiro.demo.Role;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class UrlUtilBuilder {
@@ -16,6 +15,10 @@ public class UrlUtilBuilder {
     public void urlTransitionShiro(String u) throws Exception {
         if(u==null|u.length()==0){
             throw new Exception("parameter allUrl not null");
+        }
+        //url format path/{param}
+        if(u.indexOf("{")!=-1){
+            u=u.substring(0,u.indexOf("{")-1);
         }
         StringBuilder builder = new StringBuilder();
         builder.append(u);

@@ -3,14 +3,13 @@ package com.tata.change.base.service.impl;
 import com.tata.change.base.demo.Demo;
 import com.tata.change.base.mapper.BaseMapper;
 import com.tata.change.base.service.Service;
-import com.tata.change.shiro.demo.Permission;
-import com.tata.change.util.DataCount;
-import com.tata.change.util.Query;
+import com.tata.change.mybatis.DataCount;
+import com.tata.change.base.demo.Query;
 import com.tata.change.util.result.ResultJson;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 @Transactional(readOnly = true,propagation = Propagation.SUPPORTS)
@@ -27,10 +26,12 @@ public class ServiceImpl<T extends Demo> implements Service<T> {
             }
         }
     }
+    @Autowired
     BaseMapper<T> baseMapper;
     @Override
     @Transactional
     public void baseInsert(T t) {
+        System.out.println("baseMapper:--------------"+baseMapper);
         baseMapper.baseInsert(t);
     }
 

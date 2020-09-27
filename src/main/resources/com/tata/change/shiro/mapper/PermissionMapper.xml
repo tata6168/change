@@ -3,6 +3,14 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tata.change.shiro.mapper.PermissionMapper">
+<!--List<Permission> roleByPermission(List<Integer> roleId);-->
+    <select id="roleByPermission" resultType="Permission" parameterType="Integer">
+        SELECT * FROM role_permission AS rp JOIN permission AS p ON rp.permission_id = p.permission_id WHERE rp.role_id IN
+        <foreach item="i" collection="List" separator="," open="(" close=")">
+            #{i}
+        </foreach>
+        ;
+    </select>
 <!--  query  -->
     <select id="query" parameterType="Query" resultType="Permission">
         SELECT * FROM permission
@@ -12,8 +20,8 @@
          LIMIT #{currentPage},#{pageSize}
     </select>
 <!--base-->
-    <insert id="baseInsert" parameterType="Role" useGeneratedKeys="true" keyColumn="permission_id" keyProperty="permissionId">
-        INSERT INTO permission(permission_name,path) VALUES (#{permissionName},#{path});
+    <insert id="baseInsert" parameterType="Permission" useGeneratedKeys="true" keyColumn="permission_id" keyProperty="permissionId">
+        INSERT INTO permission(permission_name,path,sn) VALUES (#{permissionName},#{path},#{sn});
     </insert>
     <select id="baseSearchById" parameterType="Long" resultType="Role">
         SELECT * FROM permission WHERE permission_id = #{permissionId};

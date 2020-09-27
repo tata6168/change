@@ -10,6 +10,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface FieldCondition {
+    String fileName() default "*";
     Class<? extends Field> type();
     Field.Store store() default Field.Store.YES;
 }

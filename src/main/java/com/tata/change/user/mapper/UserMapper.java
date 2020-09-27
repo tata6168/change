@@ -11,4 +11,6 @@ public interface UserMapper extends BaseMapper<User> {
 
     //用户获取权限
     List<String> userIdRetrievePermission(Long userId);
+    //用户角色id获取
+    List<Integer> userByRoleId(Long userId);
 }

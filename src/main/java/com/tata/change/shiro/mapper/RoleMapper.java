@@ -12,4 +12,10 @@ public interface RoleMapper extends BaseMapper<Role> {
     void roleDeletePermission(List<Integer> id);
     void deleteRole(Integer roleId);
     void userRoleAdd(@Param("userId") Long userId,@Param("roleId") List<Integer> roleId);
+
+
+    void rolePermissionAdd(@Param("roleId")Integer roleId,@Param("permissionId") List<Integer> permissionId);
+
+    void roleMenuAdd(@Param("roleId") Integer roleId,@Param("menuId") Integer menuId);
+    List<Integer> userByRoleId(Long userId);
 }

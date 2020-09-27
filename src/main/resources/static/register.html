@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>register</title>
+    <script src="layui/layui.all.js"></script>
+    <script src="js/jquery-3.5.1.min.js"></script>
+    <link rel="stylesheet" href="layui/css/layui.css"/>
+</head>
+<body>
+    <div class="layui-container" style="padding-top:15% ">
+        <div class="layui-row">
+            <div class="layui-col-md7 layui-col-lg-offset4">
+                <form class="layui-form" style="background-colo:#66b1ff;padding-right: 15px" action="">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">输入框</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="name" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">密码框</label>
+                        <div class="layui-input-inline">
+                            <input type="password" name="passWord" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    layui.use('form',function () {
+        let form = layui.form;
+        form.on('submit(formDemo)',function(data){
+            $.ajax({
+                url:"user/register",
+                type:"post",
+                data:JSON.stringify(data.field),
+                headers: {'Content-Type': 'application/json'},
+                success:function (data) {
+                    let raw = data;
+                    //跳转页面
+                    window.location.href = "/login.html"
+                },
+                error:function (xhr, textStatus, errorThrown) {
+
+                    console.debug("进入error---");
+                    console.debug("状态码："+xhr.status);
+                    console.debug("状态:"+xhr.readyState);//当前状态,0-未初始化，1-正在载入，2-已经载入，3-数据进行交互，4-完成。
+                    console.debug("错误信息:"+xhr.statusText );
+                    console.debug("返回响应信息："+xhr.responseText );//这里是详细的信息
+                    console.debug("请求状态："+textStatus);
+                    console.debug(errorThrown);
+                    console.debug("请求失败");
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</html>

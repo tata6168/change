@@ -1,7 +1,7 @@
 package com.tata.change.base.service;
 
 import com.tata.change.base.demo.Demo;
-import com.tata.change.util.Query;
+import com.tata.change.base.demo.Query;
 import com.tata.change.util.result.ResultJson;
 
 import java.util.List;

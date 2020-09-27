@@ -2,6 +2,11 @@ package com.tata.change.shiro.mapper;
 
 import com.tata.change.ChangeStart;
 import com.tata.change.base.mapper.BaseMapper;
+import com.tata.change.mybatis.resolver.MybatisDemoResolver;
+import com.tata.change.shiro.demo.Permission;
+import com.tata.change.shiro.demo.Role;
+import com.tata.change.shiro.service.RoleService;
+import com.tata.change.user.demo.User;
 import com.tata.change.user.mapper.UserMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -19,12 +24,22 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(classes = ChangeStart.class)
 class RoleMapperTest {
     @Autowired
+    MybatisDemoResolver resolver;
+    @Autowired
     RoleMapper roleMapper;
     @Autowired
     UserMapper userMapper;
     @Autowired
     ApplicationContext applicationContext;
+    @Autowired
+    RoleService roleService;
 
+    @Test
+    void rr(){
+       roleService.baseSearchAll();
+        System.out.println("******************************");
+        roleService.baseSearchAll();
+    }
     @Test
     void roleByPermission() {
         System.out.println(userMapper.count());
@@ -32,10 +47,15 @@ class RoleMapperTest {
 
     @Test
     void roleDeletePermission() {
+        roleMapper.roleMenuAdd(1,2);
     }
 
     @Test
     void deleteRole() {
+        User user = new User();
+        user.setName("ssssss");
+
+        userMapper.baseInsert(user);
     }
 
     @Test

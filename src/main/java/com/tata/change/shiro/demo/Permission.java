@@ -1,7 +1,9 @@
 package com.tata.change.shiro.demo;
 
 import com.tata.change.base.demo.Demo;
+import lombok.ToString;
 
+@ToString
 public class Permission extends Demo {
     private Integer permissionId;
     private String permissionName;

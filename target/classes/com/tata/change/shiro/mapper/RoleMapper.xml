@@ -3,6 +3,11 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tata.change.shiro.mapper.RoleMapper">
+    <cache/>
+<!--  List<Integer> userByRoleId(Long userId);  -->
+    <select id="userByRole" parameterType="Long" resultType="Integer">
+        SELECT role_id FROM user_role WHERE user_id = #{userId};
+    </select>
 <!-- PERMISSION -->
 <!-- List<Permission> roleByPermission(Integer roleId);   -->
     <select id="roleByPermission" resultType="Permission" parameterType="Integer">
@@ -43,12 +48,18 @@
     T baseSearchById(Long id);
     void baseUpdate(Map param);
     void baseDeleteById(Long id);
+    List<T> baseSearchAll();
+    List<T> query(Query<T> query);
+    Long count();
 -->
-    <insert id="baseInsert" parameterType="Permission" useGeneratedKeys="true" keyColumn="role_id" keyProperty="roleId">
+    <insert id="baseInsert" parameterType="Role" useGeneratedKeys="true" keyColumn="role_id" keyProperty="roleId">
         INSERT INTO role(role_name) VALUES (#{roleName});
     </insert>
     <select id="baseSearchById" parameterType="Long" resultType="Permission">
         SELECT * FROM role WHERE role_id = #{roleId};
+    </select>
+    <select id="query" parameterType="Query" resultType="Role">
+        SELECT * FROM role;
     </select>
     <update id="baseUpdate" parameterType="Map">
         UPDATE role SET(role_name=#{roleName});
@@ -62,4 +73,16 @@
     <select id="count" resultType="Long">
         SELECT COUNT(*) FROM role;
     </select>
+<!--    void rolePermissionAdd(@Param("roleId")Integer roleId,@Param("permissionId") List<Integer> permissionId);-->
+    <insert id="rolePermissionAdd" >
+        INSERT INTO role_permission(role_id,permission_id) VALUES
+        <foreach collection="permissionId" item="item" separator=",">
+            (#{roleId},#{item})
+        </foreach>
+        ;
+    </insert>
+<!--  roleMenuAdd  -->
+    <insert id="roleMenuAdd" >
+        INSERT INTO role_menu (role_id,menu_id) value (#{roleId},#{menuId});
+    </insert>
 </mapper>

@@ -1,8 +1,10 @@
 package com.tata.change.shiro.demo;
 
 import com.tata.change.base.demo.Demo;
+import lombok.ToString;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Role extends Demo {
@@ -32,5 +34,19 @@ public class Role extends Demo {
 
     public void setRoleId(Integer roleId) {
         this.roleId = roleId;
+    }
+
+    @Override
+    public String toString() {
+        String ss = "";
+        Iterator<Permission> iterator = permissionList.iterator();
+        while (iterator.hasNext()){
+            ss = ss+iterator.next().toString();
+        }
+        return  "Role{" +
+                "roleId=" + roleId +
+                ", roleName='" + roleName + '\'' +
+                ", permissionList=" + ss+
+                '}';
     }
 }

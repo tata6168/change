@@ -1,5 +1,9 @@
 package com.tata.change.shiro.configuration;
 
+import com.tata.change.shiro.demo.Permission;
+import com.tata.change.shiro.mapper.PermissionMapper;
+import com.tata.change.shiro.mapper.RoleMapper;
+import com.tata.change.shiro.service.PermissionService;
 import com.tata.change.user.mapper.UserMapper;
 import com.tata.change.util.shiro.MD5Util;
 import org.apache.shiro.SecurityUtils;
@@ -27,18 +31,20 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.tata.change.user.demo.User;
-
-
-
 @Configuration
 public class ShiroCof {
     @Autowired
     UserMapper userMapper;
+    @Autowired
+    RoleMapper roleMapper;
+    @Autowired
+    PermissionMapper permissionMapper;
+    @Autowired
+    PermissionService permissionService;
     @Lazy
     @Autowired
     @Qualifier("webSecurityManager")
     DefaultWebSecurityManager securityManager;
-
     @Bean("hashedCredentialsMatcher")
     public HashedCredentialsMatcher matcher(){
         HashedCredentialsMatcher matcher = new HashedCredentialsMatcher();
@@ -56,13 +62,13 @@ public class ShiroCof {
             @Override
             protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
                 User user = (User) SecurityUtils.getSubject().getPrincipal();
-                //获取授权
-                List<String> permissionPath = userMapper.userIdRetrievePermission(user.getUserId());
+                List<Integer> integers = roleMapper.userByRoleId(user.getUserId());
+                List<Permission> permissions = permissionMapper.roleByPermission(integers);
+                user.setRoleId(integers);
                 SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-                info.addStringPermissions(permissionPath);
+                permissions.forEach(e->info.addStringPermission(e.getSn()));
                 return info;
             }
-
             @Override
             protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
                 UsernamePasswordToken token1 = (UsernamePasswordToken) token;
@@ -74,12 +80,10 @@ public class ShiroCof {
                 SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user,user.getPassWord(),salt,"AuthorizingRealm");
                 return info;
             }
-
             @Override
             public String getName() {
                 return "AuthorizingRealm";
             }
-
             @Override
             public void setCredentialsMatcher(CredentialsMatcher credentialsMatcher) {
                 super.setCredentialsMatcher(matcher);
@@ -96,11 +100,21 @@ public class ShiroCof {
     public ShiroFilterFactoryBean getShiroFilterFactoryBean(){
         ShiroFilterFactoryBean factoryBean = new ShiroFilterFactoryBean();
         factoryBean.setSecurityManager( securityManager);
+
         factoryBean.setSuccessUrl("/success");
         factoryBean.setLoginUrl("/login");
         HashMap<String, String> map = new HashMap<>();
-        map.put("/**","anon");
-        map.put("/test","perms[test:test]");
+        //map.put("/**","anon");
+        List<Permission> permissions = permissionService.baseSearchAll();
+        permissions.forEach(e->{
+            if(e.getPath()!=null&&e.getPath()!="")
+            map.put(e.getPath(),"perms["+e.getSn()+"]");
+        });
+
+
+        //role
+        map.put("/test/result2","anon");
+        map.put("/test/result","anon");
         factoryBean.setFilterChainDefinitionMap(map);
         return factoryBean;
     }

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tata.change.menu.mapper.MenuMapper">
+<!--
+void baseInsert(T t);
+T baseSearchById(Long id);
+void baseUpdate(Map param);
+void baseDeleteById(Long id);
+List<T> baseSearchAll();
+List<T> query(Query<T> query);
+Long count();
+-->
+    <insert id="baseInsert" parameterType="Menu" keyProperty="menuId" keyColumn="menu_id" useGeneratedKeys="true">
+        INSERT INTO menu(menu_name,parent_id,path) VALUES (#{menuName},#{parentId},#{path});
+    </insert>
+    <resultMap id="menuPC" type="Menu">
+        <id property="menuId" column="pmenuId" ></id>
+        <result property="menuName" column="pmenuName"></result>
+        <collection property="children" ofType="Menu">
+            <id column="cmenuId" property="menuId"></id>
+            <result column="cmenuName" property="menuName"></result>
+            <result column="cparent_id" property="parentID"></result>
+            <result column="cpath" property="path"></result>
+        </collection>
+    </resultMap>
+    <select id="roleByMenu" resultMap="menuPC" parameterType="Integer">
+        SELECT
+        m.menu_name AS pmenuName,
+        m.menu_id AS pmenuId,
+        mc.parent_id AS cparentId,
+        mc.menu_id AS cmeunId,
+        mc.path AS cpath,
+        mc.menu_name AS cmenuName
+        FROM
+        role_menu rm JOIN menu m
+        ON rm.menu_id = m.menu_id
+        JOIN menu mc
+        ON mc.parent_id = m.menu_id
+        WHERE
+        rm.role_id IN
+        <foreach collection="list" item="i" separator="," open="(" close=")">
+            #{i}
+        </foreach>
+        ;
+    </select>
+</mapper>
